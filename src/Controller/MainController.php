@@ -2,11 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class MainController extends AbstractController
@@ -21,6 +19,11 @@ class MainController extends AbstractController
     public function liste(UserRepository $userRepository)
     {
         $users = $userRepository->findAll();
+//        $languagesListe = $userRepository->findUsersWithLanguages();
+//        dd($languagesListe);
+//        foreach ($users as $val){
+//            $languagesListe = array_push();
+//        }
         return $this->render('main/liste.html.twig', [
             "users" => $users
         ]);
@@ -32,17 +35,26 @@ class MainController extends AbstractController
         return $this->render('main/message.html.twig');
     }
 
-    #[Route('/ajoutAmis', name: 'main_ajoutAmis')]
-    public function AjoutAmis(EntityManagerInterface $entityManager)
+    #[Route('/ajoutAmis/{entity}/{id} ', name: 'main_ajoutAmis')]
+    public function AjoutAmis($entity, $id, EntityManagerInterface $entityManager, UserRepository $userRepository)
     {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $user->getUsername();
-//        $user->addAmi($userFriend->getId());
-//        $entityManager->persist($user);
-//        $entityManager->flush();
+        $user = $userRepository->find($entity);
+        $user->addAmi($userRepository->find($id));
+        $entityManager->persist($user);
+        $entityManager->flush();
 
         return $this->redirectToRoute('main_liste');
+    }
 
-        //return $this->render('main/amis.html.twig');
+    #[Route('/retirerAmis/{entity}/{id} ', name: 'main_retirerAmis')]
+    public function RetirerAmis($entity, $id, EntityManagerInterface $entityManager, UserRepository $userRepository)
+    {
+
+        $user = $userRepository->find($entity);
+        $user->removeAmi($userRepository->find($id));
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('main_liste');
     }
 }

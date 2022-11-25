@@ -16,16 +16,22 @@
         </thead>
         <tbody>
         {% for user in users %}
-            <tr>
-                <th scope="row">{{ user.username }} ({{ user.amis.count }})</th>
-                <th>{{ app.user.amis.count }}</th>
-                {% if app.user.amis.containsKey(user.id) %}
-                    <th><img src="{{ asset('img/user-minus.svg') }}" alt="Retirer des amis"></th>
-                {% else %}
-                    <th><a href="{{ path('main_ajoutAmis', {userFriend: user}) }}"><img src="{{ asset('img/user-plus.svg') }}" alt="Ajouter en ami"></a></th>
-                {% endif %}
-                <th><img src="{{ asset('img/message-square.svg') }}" alt="Envoyer un message"></th>
-            </tr>
+            {% if user.username != app.user.username %}
+                <tr>
+                    <th scope="row">{{ user.username }} ({{ user.amis.count }})</th>
+                    <th>
+                        {% for language in user.langage %}
+                            <img src="{{ asset('img/langage/') ~ language.img }}" style="width: 32px">
+                        {% endfor %}
+                    </th>
+                    {% if app.user.amis.contains(user) %}
+                        <th><a href="{{ path('main_retirerAmis', {'entity': app.user.id, 'id': user.id}) }}"><img src="{{ asset('img/user-minus.svg') }}" alt="Retirer des amis"></a></th>
+                    {% else %}
+                        <th><a href="{{ path('main_ajoutAmis', {'entity': app.user.id, 'id': user.id}) }}"><img src="{{ asset('img/user-plus.svg') }}" alt="Ajouter en ami"></a></th>
+                    {% endif %}
+                    <th><img src="{{ asset('img/message-square.svg') }}" alt="Envoyer un message"></th>
+                </tr>
+            {% endif %}
         {% endfor %}
         </tbody>
     </table>

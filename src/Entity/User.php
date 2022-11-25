@@ -40,10 +40,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
+    #[ORM\ManyToMany(targetEntity: Langage::class, inversedBy: 'users')]
+    private Collection $langage;
+
     public function __construct()
     {
         $this->amis = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->langage = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -175,6 +179,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Langage>
+     */
+    public function getLangage(): Collection
+    {
+        return $this->langage;
+    }
+
+    public function addLangage(Langage $langage): self
+    {
+        if (!$this->langage->contains($langage)) {
+            $this->langage->add($langage);
+        }
+
+        return $this;
+    }
+
+    public function removeLangage(Langage $langage): self
+    {
+        $this->langage->removeElement($langage);
 
         return $this;
     }
