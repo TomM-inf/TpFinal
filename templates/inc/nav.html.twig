@@ -1,0 +1,13 @@
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{ path('main_home') }}">Accueil</a>
+        <form class="d-flex">
+            {% if app.user %}
+                <a href="{{ path('app_logout') }}" class="btn btn-info">Se déconnecter {{ app.user.username }} ({{ app.user.amis.count }})</a>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="btn btn-info">Se connecter</a>
+                <a href="{{ path('app_register') }}" class="btn btn-light">S'enregistrer</a>
+            {% endif %}
+        </form>
+    </div>
+</nav>

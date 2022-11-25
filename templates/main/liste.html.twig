@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Dev liste
+{% endblock %}
+
+{% block body %}
+    <table class="table table-sm">
+        <thead>
+        <tr>
+            <th scope="col">Développeur</th>
+            <th scope="col">Language</th>
+            <th scope="col">Ajouter/Retirer des amis</th>
+            <th scope="col">Envoyer un message</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <th scope="row">{{ user.username }} ({{ user.amis.count }})</th>
+                <th>{{ app.user.amis.count }}</th>
+                {% if app.user.amis.containsKey(user.id) %}
+                    <th><img src="{{ asset('img/user-minus.svg') }}" alt="Retirer des amis"></th>
+                {% else %}
+                    <th><a href="{{ path('main_ajoutAmis', {userFriend: user}) }}"><img src="{{ asset('img/user-plus.svg') }}" alt="Ajouter en ami"></a></th>
+                {% endif %}
+                <th><img src="{{ asset('img/message-square.svg') }}" alt="Envoyer un message"></th>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+

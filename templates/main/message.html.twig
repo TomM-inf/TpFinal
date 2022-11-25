@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Messages
+{% endblock %}
+
+{% block body %}
+    <form>
+        <div class="mb-3">
+            <label for="formMessageSubject" class="form-label">Sujet:</label>
+            <input type="text" class="form-control" id="formMessageSubject">
+        </div>
+        <div class="">
+            <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+
+        </div>
+        <div class="mb-3">
+            <label for="formMessageCorps" class="form-label">Corps:</label>
+            <textarea class="form-control" id="formMessageCorps" rows="3"></textarea>
+        </div>
+        <button class="btn btn-outline-info" type="submit">Envoyer</button>
+    </form>
+{% endblock %}
+
